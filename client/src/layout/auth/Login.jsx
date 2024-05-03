@@ -1,7 +1,7 @@
 import React from 'react'
 
 import axios from 'axios'
-import logoIUH from '../../image/logoIUH.png'
+import logoIUH from '../../assets/image/logoIUH.png'
 const Login = () => {
   //this token will be set in the application's local storage with the purpose of use for all API when the user login success
   // token will get in axiosClient.js
@@ -43,19 +43,212 @@ const Login = () => {
       </div>
       <div
         style={{
-          display: 1,
-          height: '220px',
-          width: '400px',
+          display: 'flex',
+          height: '250px',
+          width: '450px',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: '10px',
-
-          border: '1px solid #000',
-
-          marginTop: '30px'
+          border: '1px solid #e7dfdf',
+          marginTop: '30px',
+          borderRadius: '5px',
+          flexDirection: 'column'
         }}
       >
-        <div>hello</div>
+        <div
+          style={{
+            display: 'flex',
+            height: '14%',
+            width: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '1px solid #a59a9a',
+            marginTop: '10px'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '40%',
+              alignItems: 'center',
+              backgroundColor: '#eceff5'
+            }}
+          >
+            <label
+              style={{
+                fontSize: '15px',
+                color: 'black',
+                marginLeft: '10px'
+              }}
+            >
+              Mã sinh viên
+            </label>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '60%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderLeft: '1px solid #a59a9a'
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Nhập mã sinh viên"
+              style={{
+                height: '89%',
+                width: '100%',
+                fontSize: '15px',
+                border: 'none'
+              }}
+            ></input>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            height: '14%',
+            width: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '1px solid #a59a9a',
+            marginTop: '15px'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '40%',
+              alignItems: 'center',
+              backgroundColor: '#e6e9f0'
+            }}
+          >
+            <label
+              style={{
+                fontSize: '15px',
+                color: 'black',
+                marginLeft: '10px'
+              }}
+            >
+              Mật khẩu
+            </label>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '60%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderLeft: '1px solid #a59a9a'
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Nhập mật khẩu"
+              style={{
+                height: '89%',
+                width: '100%',
+                fontSize: '15px',
+                border: 'none'
+              }}
+            ></input>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            height: '14%',
+            width: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '1px solid #a59a9a',
+            marginTop: '15px'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '40%',
+              alignItems: 'center',
+              backgroundColor: '#e6e9f0'
+            }}
+          >
+            <label
+              style={{
+                fontSize: '15px',
+                color: 'black',
+                marginLeft: '10px'
+              }}
+            >
+              Mã bảo vệ
+            </label>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '30%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderLeft: '1px solid #a59a9a'
+            }}
+          >
+            <input
+              type="text"
+              placeholder=" "
+              style={{
+                height: '89%',
+                width: '100%',
+                fontSize: '15px',
+                border: 'none'
+              }}
+            ></input>
+          </div>
+          {/* --------Này là mã bảo vệ nhé --------- */}
+          <div
+            style={{
+              display: 'flex',
+              height: '100%',
+              width: '30%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderLeft: '1px solid #a59a9a',
+              fontSize: '10px'
+            }}
+          >
+            Này code giùm cái mã bảo vệ code dòng 213{' '}
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            height: '20%',
+            width: '90%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '1px solid #a59a9a',
+            marginTop: '15px'
+          }}
+        >
+          <button
+            style={{
+              height: '100%',
+              width: '100%',
+              backgroundColor: '#3e69f6',
+              color: 'white',
+              fontSize: '19px',
+              fontWeight: 'bold',
+              border: 'none'
+            }}
+          >
+            ĐĂNG NHẬP
+          </button>
+        </div>
       </div>
       <div
         style={{
