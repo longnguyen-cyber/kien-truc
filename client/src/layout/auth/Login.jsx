@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import logoIUH from '../../assets/image/logoIUH.png'
 const Login = () => {
@@ -7,6 +7,11 @@ const Login = () => {
   // token will get in axiosClient.js
   const setTokenToLocalStorage = (token) => {
     localStorage.setItem('tokenUser', JSON.stringify(token))
+  }
+  const navigate = useNavigate()
+  const profile = () => {
+    // Thực hiện chuyển hướng khi người dùng nhấp vào biểu tượng
+    navigate('/profile')
   }
   return (
     <div
@@ -245,6 +250,7 @@ const Login = () => {
               fontWeight: 'bold',
               border: 'none'
             }}
+            onClick={profile}
           >
             ĐĂNG NHẬP
           </button>
