@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logoIUH from '../assets/image/logoIUH.png'
 import { useNavigate } from 'react-router-dom'
+import UserApi from '../api/user'
 const Dashboard = () => {
+
+
   const navigate = useNavigate()
   const profile = () => {
     navigate('/profile')
@@ -15,6 +18,27 @@ const Dashboard = () => {
   const login = () => {
     navigate('/login')
   }
+
+  const [user, setUser] = useState()
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if (!token) {
+      // navigate('/login')
+      return
+    }
+    const dataProfile = async () => {
+      // Call API to get profile
+      const response = await UserApi.GetProfile()
+      if (response.status === 200) {
+        const userResponse = response.data.user
+        console.log(userResponse)
+        setUser(userResponse)
+      }
+    }
+
+    dataProfile()
+  }
+    , [])
 
   return (
     <div
@@ -87,7 +111,7 @@ const Dashboard = () => {
               fontWeight: 'bold'
             }}
           >
-            Nguyễn Thúy Tình
+            {user?.student_name || 'Tên sinh viên'}
           </label>
           <label
             style={{
@@ -97,7 +121,7 @@ const Dashboard = () => {
               color: 'white'
             }}
           >
-            Giới tính:
+            Giới tính: {user.gender === 1 ? 'Nam' : 'Nữ'}
           </label>
           <label
             style={{
@@ -107,7 +131,7 @@ const Dashboard = () => {
               color: 'white'
             }}
           >
-            MSSV:
+            MSSV: {user.code || 'MSSV'}
           </label>
           <label
             style={{
@@ -117,7 +141,7 @@ const Dashboard = () => {
               color: 'white'
             }}
           >
-            Trạng thái:
+            Trạng thái: {user.status === "active" ? 'Đang học' : 'Nghỉ học'}
           </label>
           <button
             style={{

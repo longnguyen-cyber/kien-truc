@@ -1,17 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import logoIUH from '../../assets/image/logoIUH.png'
+import UserApi from '../../api/user'
 const Login = () => {
   //this token will be set in the application's local storage with the purpose of use for all API when the user login success
   // token will get in axiosClient.js
   const setTokenToLocalStorage = (token) => {
-    localStorage.setItem('tokenUser', JSON.stringify(token))
+    localStorage.setItem('accessToken', JSON.stringify(token))
   }
+
+
+  const [code, setCode] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target
+    if (name === 'code') {
+      setCode(value)
+    } else if (name === 'password') {
+      setPassword(value)
+    }
+  }
+
+
+
   const navigate = useNavigate()
-  const profile = () => {
+  const profile = async () => {
     // Thực hiện chuyển hướng khi người dùng nhấp vào biểu tượng
-    navigate('/profile')
+    // navigate('/profile')
+    const data = {
+      code: 20007066,
+      password: "111111"
+
+    }
+
+    const response = await UserApi.UserLogin(data)
+    if (response.status === 200) {
+      setTokenToLocalStorage(response.data.token)
+      navigate('/profile')
+    }
   }
   return (
     <div
@@ -102,6 +130,9 @@ const Login = () => {
             <input
               type="text"
               placeholder="Nhập mã sinh viên"
+              name='code'
+              value={code}
+              onChange={handleOnChange}
               style={{
                 height: '89%',
                 width: '100%',
@@ -152,8 +183,11 @@ const Login = () => {
             }}
           >
             <input
-              type="text"
+              type="password"
               placeholder="Nhập mật khẩu"
+              name='password'
+              value={password}
+              onChange={handleOnChange}
               style={{
                 height: '89%',
                 width: '100%',
@@ -163,7 +197,7 @@ const Login = () => {
             ></input>
           </div>
         </div>
-        <div
+        {/* <div
           style={{
             display: 'flex',
             height: '14%',
@@ -214,7 +248,6 @@ const Login = () => {
               }}
             ></input>
           </div>
-          {/* --------Này là mã bảo vệ nhé --------- */}
           <div
             style={{
               display: 'flex',
@@ -228,7 +261,7 @@ const Login = () => {
           >
             Này code giùm cái mã bảo vệ code dòng 213{' '}
           </div>
-        </div>
+        </div> */}
         <div
           style={{
             display: 'flex',
@@ -248,7 +281,8 @@ const Login = () => {
               color: 'white',
               fontSize: '19px',
               fontWeight: 'bold',
-              border: 'none'
+              border: 'none',
+              cursor: 'pointer'
             }}
             onClick={profile}
           >

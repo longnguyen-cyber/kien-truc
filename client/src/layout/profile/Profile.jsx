@@ -1,7 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Dashboard from '../Dashboard'
+import UserApi from '../../api/user'
 
+import { useNavigate } from 'react-router-dom'
 const Profile = () => {
+  const navigate = useNavigate()
+
+  const [user, setUser] = useState()
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if (!token) {
+      // navigate('/login')
+      return
+    }
+    const dataProfile = async () => {
+      // Call API to get profile
+      const response = await UserApi.GetProfile()
+      if (response.status === 200) {
+        const userResponse = response.data.user
+        setUser(userResponse)
+        setUser(response.data)
+      }
+    }
+
+    dataProfile()
+  }
+    , [])
   return (
     <div
       style={{
