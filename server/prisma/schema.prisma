@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subject {
+  subject_id    Int            @id
+  subject_name  String
+  credits       Int
+  isRequired    Boolean
+  term          String
+  theory        Int
+  practice      Int
+  prerequisites Prerequisite[]
+  classes       Class[]
+  grades        Grade[]
+}
+
+model Prerequisite {
+  prerequisite_id         Int     @id @default(autoincrement())
+  prerequisite_subject_id Int
+  subject_id              Int
+  subject                 Subject @relation(fields: [subject_id], references: [subject_id])
+}
+
+model Student {
+  student_id    Int          @id @default(autoincrement())
+  student_name  String
+  code          Int          @unique
+  status        String
+  password      String
+  gender        Boolean      @default(true)
+  total_credits Int          @default(0)
+  enrollments   Enrollment[]
+  schedules     Schedule[]
+  grades        Grade[]
+}
+
+model Class {
+  class_id         Int          @id @default(autoincrement())
+  subject_id       Int
+  professor_name   String
+  class_name       String
+  room_name        String
+  max_capacity     Int
+  current_capacity Int          @default(0)
+  term             Int
+  year             Int
+  status           Boolean?     @default(true) // when close the class, status will be false
+  isEnrolling      Boolean?     @default(true) // when close the enrollment, isEnrolling will be false
+  subject          Subject      @relation(fields: [subject_id], references: [subject_id])
+  enrollments      Enrollment[]
+  schedules        Schedule[]
+}
+
+model Enrollment {
+  enrollment_id       Int      @id @default(autoincrement())
+  student_id          Int
+  class_id            Int
+  status              String // when close the class, status will be "closed"
+  registration_date   DateTime @default(now())
+  confirmation_status Boolean  @default(false) // when student confirm the enrollment, confirmation_status will be true
+  student             Student  @relation(fields: [student_id], references: [student_id])
+  class               Class    @relation(fields: [class_id], references: [class_id])
+}
+
+model Grade {
+  grade_id     Int     @id @default(autoincrement())
+  student_id   Int
+  subject_id   Int
+  digit_score  Float
+  letter_score String
+  student      Student @relation(fields: [student_id], references: [student_id])
+  subject      Subject @relation(fields: [subject_id], references: [subject_id])
+}
+
+model Schedule {
+  schedule_id Int      @id @default(autoincrement())
+  student_id  Int
+  class_id    Int
+  day_of_week String
+  start_time  DateTime
+  end_time    DateTime
+  student     Student  @relation(fields: [student_id], references: [student_id])
+  class       Class    @relation(fields: [class_id], references: [class_id])
+}
