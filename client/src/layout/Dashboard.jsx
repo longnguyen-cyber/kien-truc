@@ -3,8 +3,6 @@ import logoIUH from '../assets/image/logoIUH.png'
 import { useNavigate } from 'react-router-dom'
 import UserApi from '../api/user'
 const Dashboard = () => {
-
-
   const navigate = useNavigate()
   const profile = () => {
     navigate('/profile')
@@ -23,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
     if (!token) {
-      // navigate('/login')
+      navigate('/login')
       return
     }
     const dataProfile = async () => {
@@ -31,21 +29,19 @@ const Dashboard = () => {
       const response = await UserApi.GetProfile()
       if (response.status === 200) {
         const userResponse = response.data.user
-        console.log(userResponse)
         setUser(userResponse)
       }
     }
 
     dataProfile()
-  }
-    , [])
+  }, [])
 
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <div
@@ -55,7 +51,7 @@ const Dashboard = () => {
           width: '76%',
           backgroundColor: 'red',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <img
@@ -65,7 +61,7 @@ const Dashboard = () => {
             height: '100%',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
             //objectFit: 'contain'
           }}
           alt="logoIUH"
@@ -74,12 +70,12 @@ const Dashboard = () => {
       <div
         style={{
           display: 'flex',
-          height: '180px',
+          height: '200px',
           width: '76%',
           border: '1px solid #e7dfdf',
           marginTop: '30px',
           borderRadius: '5px',
-          flexDirection: 'row'
+          flexDirection: 'row',
         }}
       >
         <div
@@ -89,7 +85,7 @@ const Dashboard = () => {
             width: '20%',
             border: '1px solid #a59a9a',
             backgroundColor: '#4681ff',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
           <label
@@ -97,7 +93,7 @@ const Dashboard = () => {
               marginTop: '10px',
               marginLeft: '10px',
               fontSize: '13px',
-              color: 'white'
+              color: 'white',
             }}
           >
             Xin chào!
@@ -108,7 +104,7 @@ const Dashboard = () => {
               marginLeft: '10px',
               fontSize: '16px',
               color: 'white',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
             }}
           >
             {user?.student_name || 'Tên sinh viên'}
@@ -118,42 +114,42 @@ const Dashboard = () => {
               marginTop: '10px',
               marginLeft: '10px',
               fontSize: '13px',
-              color: 'white'
+              color: 'white',
             }}
           >
-            Giới tính: {user.gender === 1 ? 'Nam' : 'Nữ'}
+            Giới tính: {user?.gender === 1 ? 'Nam' : 'Nữ'}
           </label>
           <label
             style={{
               marginTop: '10px',
               marginLeft: '10px',
               fontSize: '13px',
-              color: 'white'
+              color: 'white',
             }}
           >
-            MSSV: {user.code || 'MSSV'}
+            MSSV: {user?.code || 'MSSV'}
           </label>
           <label
             style={{
               marginTop: '10px',
               marginLeft: '10px',
               fontSize: '13px',
-              color: 'white'
+              color: 'white',
             }}
           >
-            Trạng thái: {user.status === "active" ? 'Đang học' : 'Nghỉ học'}
+            Trạng thái: {user?.status === 'active' ? 'Đang học' : 'Nghỉ học'}
           </label>
           <button
             style={{
               marginTop: '10px',
-              height: '35px',
+              height: '30px',
               width: '90%',
               backgroundColor: '#fa763a',
               color: 'white',
               fontSize: '14px',
               fontWeight: 'bold',
               border: 'none',
-              marginLeft: '10px'
+              marginLeft: '10px',
             }}
             onClick={login}
           >
@@ -168,7 +164,7 @@ const Dashboard = () => {
             width: '12%',
             marginTop: '10px',
             border: '1px solid #a59a9a',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
         >
           <img
@@ -185,19 +181,20 @@ const Dashboard = () => {
             width: '40%',
 
             flexDirection: 'column',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}
         >
           <div
             style={{
               display: 'flex',
-              marginTop: '10px'
+              marginTop: '10px',
             }}
           >
             <label
               style={{
                 fontSize: '15px',
-                color: 'blue'
+                color: 'blue',
+                cursor: 'pointer',
               }}
               onClick={profile}
             >
@@ -207,13 +204,14 @@ const Dashboard = () => {
           <div
             style={{
               display: 'flex',
-              marginTop: '10px'
+              marginTop: '10px',
             }}
           >
             <label
               style={{
                 fontSize: '15px',
-                color: 'blue'
+                color: 'blue',
+                cursor: 'pointer',
               }}
               onClick={registercourse}
             >
@@ -223,13 +221,14 @@ const Dashboard = () => {
           <div
             style={{
               display: 'flex',
-              marginTop: '10px'
+              marginTop: '10px',
             }}
           >
             <label
               style={{
                 fontSize: '15px',
-                color: 'blue'
+                color: 'blue',
+                cursor: 'pointer',
               }}
               onClick={schedule}
             >

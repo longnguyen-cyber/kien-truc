@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import logoIUH from '../../assets/image/logoIUH.png'
@@ -26,6 +26,14 @@ const Login = () => {
 
 
   const navigate = useNavigate()
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      navigate('/profile')
+      return
+    }
+  }, [])
+
   const profile = async () => {
     // Thực hiện chuyển hướng khi người dùng nhấp vào biểu tượng
     // navigate('/profile')
