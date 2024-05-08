@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Dashboard from '../Dashboard'
+import Header from '../Header'
 import UserApi from '../../api/user'
 import SubjectApi from '../../api/subject'
 import { FaCircleCheck } from 'react-icons/fa6'
+import Footer from '../Footer'
 const Schedule = () => {
   const [subjects, setSubjects] = useState([])
 
@@ -92,20 +93,10 @@ const Schedule = () => {
   // Rest of your component remains unchanged
 
   return (
-    <div className="flex flex-col items-center">
-      <Dashboard />
-      <div
-        style={{
-          display: 'flex',
-          width: '76%',
-          border: '1px solid #e7dfdf',
-          marginTop: '20px',
-          borderRadius: '5px',
-          flexDirection: 'column',
-          paddingBottom: '20px',
-        }}
-      >
-        <table className="">
+    <div>
+      <Header />
+      <div className="w-3/4 mx-auto mt-4">
+        <table className="w-full">
           <thead className="bg-blue-600">
             <tr>
               <th className="border border-slate-700">STT</th>
@@ -137,6 +128,8 @@ const Schedule = () => {
           )}
         </table>
       </div>
+      <br />
+      <Footer />
     </div>
   )
 }

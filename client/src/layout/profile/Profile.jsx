@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Dashboard from '../Dashboard'
+import Header from '../Header'
 import UserApi from '../../api/user'
 
 import { useNavigate } from 'react-router-dom'
+import Footer from '../Footer'
 const Profile = () => {
   const navigate = useNavigate()
 
@@ -17,237 +18,58 @@ const Profile = () => {
       // Call API to get profile
       const response = await UserApi.GetProfile()
       if (response.status === 200) {
-        const userResponse = response.data.user
+        const userResponse = response.data
+        console.log(userResponse)
         setUser(userResponse)
         setUser(response.data)
       }
     }
 
     dataProfile()
-  }
-    , [])
+  }, [])
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
-      <Dashboard />
-      <div
-        style={{
-          display: 'flex',
-          height: '180px',
-          width: '76%',
-          border: '1px solid #e7dfdf',
-          marginTop: '20px',
-          borderRadius: '5px',
-          flexDirection: 'column'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            height: '20%',
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <label
-            style={{
-              fontSize: '18px',
-              marginTop: '10px',
-              color: 'blue',
-              fontWeight: 'bold'
-            }}
-          >
+    <div>
+      <Header />
+      <div className="w-3/4 mx-auto ">
+        <div className="border my-6 p-3 border-l-[3px] border-l-blue-600">
+          <p className="text-blue-500 text-center font-bold text-xl mt-2 mb-6">
             THÔNG TIN SINH VIÊN
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            height: '80%',
-            width: '100%',
-            flexDirection: 'row'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              height: '100%',
-              width: '50%',
-              marginTop: '10px',
-              flexDirection: 'column'
-            }}
-          >
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '15px',
-                marginLeft: '20px',
-                color: 'black'
-              }}
-            >
-              Khóa:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '20px',
-                color: 'black'
-              }}
-            >
-              Bậc đào tạo:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '20px',
-                color: 'black'
-              }}
-            >
-              Ngành:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '20px',
-                color: 'black'
-              }}
-            >
-              Khoa:
-            </label>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              height: '100%',
-              width: '50%',
-              marginTop: '10px',
-              flexDirection: 'column'
-            }}
-          >
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '15px',
-                marginLeft: '10px',
-                color: 'black'
-              }}
-            >
-              Lớp:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '10px',
-                color: 'black'
-              }}
-            >
-              Loại hình đào tạo:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '10px',
-                color: 'black'
-              }}
-            >
-              Chuyên ngành:
-            </label>
-            <label
-              style={{
-                fontSize: '14px',
-                marginTop: '5px',
-                marginLeft: '10px',
-                color: 'black'
-              }}
-            >
-              Cơ sở:
-            </label>
+          </p>
+          <div className="grid grid-cols-2 mx-6">
+            <div>
+              <p>
+                Khóa: <strong>{user?.education.course}</strong>
+              </p>
+              <p>
+                Bậc đào tạo: <strong>{user?.education.training_level}</strong>
+              </p>
+              <p>
+                Ngành: <strong>{user?.education.sector}</strong>
+              </p>
+              <p>
+                Khoa: <strong>{user?.education.faculty}</strong>
+              </p>
+            </div>
+            <div>
+              <p>
+                Lớp: <strong>{user?.education.identifier_class}</strong>
+              </p>
+              <p>
+                Loại hình đào tạo:{' '}
+                <strong>{user?.education.training_type}</strong>
+              </p>
+              <p>
+                Chuyên ngành: <strong>{user?.education.major}</strong>
+              </p>
+              <p>
+                Cơ sở: <strong>{user?.education.facility}</strong>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          height: '20%',
-          width: '76%',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          marginTop: '20px',
-          backgroundColor: '#3e69f6'
-        }}
-      >
-        <div
-          style={{
-            height: '70%',
-            width: '100%',
-            marginTop: '10px',
-            marginLeft: '10px'
-          }}
-        >
-          <label
-            style={{
-              fontSize: '15px',
-              color: 'white'
-            }}
-          >
-            TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH <br></br>Địa chỉ : Số 12
-            Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP. Hồ Chí Minh <br></br>
-            Điện thoại: 0283 8940 390<br></br> Fax: 0283 9940 954 <br></br>
-            Email: dhcn@iuh.edu.vn
-          </label>
-        </div>
-        <div
-          style={{
-            height: '30%',
-            width: '70%',
-            display: 'flex',
-            justifyContent: 'right',
-            marginTop: '10px',
-            marginRight: '30px'
-          }}
-        >
-          <label
-            style={{
-              fontSize: '15px',
-              color: 'white'
-            }}
-          >
-            Thong ke truy cap
-          </label>
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          height: '6%',
-          width: '76%',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          backgroundColor: 'lightblue'
-        }}
-      >
-        <label
-          style={{
-            marginTop: '15px',
-            fontSize: '12px',
-            color: 'white'
-          }}
-        >
-          Bản quyền 2024 - Trường Đại học Công nghiệp TP. Hồ Chí Minh
-        </label>
-      </div>
+      <Footer />
+      <br />
     </div>
   )
 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FaCircleCheck } from 'react-icons/fa6'
 import { IoMdCloseCircle } from 'react-icons/io'
-import Dashboard from '../Dashboard'
+import Header from '../Header'
 import ClassApi from '../../api/class'
 import CourseApi from '../../api/course'
+import Footer from '../Footer'
 const Course = () => {
   const [filter, setFilter] = useState('')
   const [classes, setClasses] = useState([])
@@ -23,7 +24,7 @@ const Course = () => {
     setFilter(event.target.value)
   }
   // Sử dụng useState hook để theo dõi giá trị radio button đã được chọn
-  const [selectedOption, setSelectedOption] = useState('')
+  const [selectedOption, setSelectedOption] = useState('hocMoi')
 
   // Hàm xử lý sự kiện khi radio button được chọn
   const handleOptionChange = (event) => {
@@ -32,59 +33,12 @@ const Course = () => {
   const [selectedRow, setSelectedRow] = useState(null)
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Dashboard />
-      <div
-        style={{
-          display: 'flex',
-          width: '76%',
-          border: '1px solid #e7dfdf',
-          marginTop: '20px',
-          borderRadius: '5px',
-          flexDirection: 'column',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            height: '20%',
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <label
-            style={{
-              fontSize: '22px',
-              marginTop: '10px',
-              color: 'blue',
-              fontWeight: 'bold',
-            }}
-          >
-            ĐĂNG KÝ HỌC PHẦN
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            height: '50%',
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '15px',
-            textAlign: 'center',
-          }}
-        >
+    <div>
+      <Header />
+      <div className="mx-auto w-3/4 mt-4 border text-center p-2">
+        <strong className="text-blue-800 text-xl">ĐĂNG KÝ HỌC PHẦN</strong>
+        <div className="flex justify-center items-center mt-4">
           <label style={{ marginRight: '10px' }}>Đợt đăng ký: </label>
-
           <select
             name="filter"
             value={filter}
@@ -119,12 +73,7 @@ const Course = () => {
             onChange={handleOptionChange}
           />
           <label
-            style={{
-              fontSize: '15px',
-              color: 'red',
-              fontWeight: 'bold',
-              marginRight: '10px',
-            }}
+            className="text-red-500 font-bold text-sm mr-2"
             htmlFor="hocMoi"
           >
             HỌC MỚI
@@ -139,12 +88,7 @@ const Course = () => {
             onChange={handleOptionChange}
           />
           <label
-            style={{
-              fontSize: '15px',
-              color: 'red',
-              fontWeight: 'bold',
-              marginRight: '10px',
-            }}
+            className="text-red-500 font-bold text-sm mr-2"
             htmlFor="hocLai"
           >
             HỌC LẠI
@@ -157,24 +101,15 @@ const Course = () => {
             value="hocCaiThien"
             checked={selectedOption === 'hocCaiThien'}
             onChange={handleOptionChange}
-            style={{
-              fontSize: '15px',
-              color: 'red',
-            }}
           />
           <label
-            style={{
-              fontSize: '15px',
-              color: 'red',
-              fontWeight: 'bold',
-              marginRight: '10px',
-            }}
+            className="text-red-500 font-bold text-sm"
             htmlFor="hocCaiThien"
           >
             HỌC CẢI THIỆN
           </label>
         </div>
-        <table className="">
+        <table className="w-full mt-2">
           <thead className="bg-blue-600">
             <tr>
               <th className="border border-slate-700 w-8"></th>
@@ -242,77 +177,7 @@ const Course = () => {
           Đắng ký
         </button>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          height: '20%',
-          width: '76%',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          marginTop: '20px',
-          backgroundColor: '#3e69f6',
-        }}
-      >
-        <div
-          style={{
-            height: '70%',
-            width: '100%',
-            marginTop: '10px',
-            marginLeft: '10px',
-          }}
-        >
-          <label
-            style={{
-              fontSize: '15px',
-              color: 'white',
-            }}
-          >
-            TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH <br></br>Địa chỉ : Số 12
-            Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP. Hồ Chí Minh <br></br>
-            Điện thoại: 0283 8940 390<br></br> Fax: 0283 9940 954 <br></br>
-            Email: dhcn@iuh.edu.vn
-          </label>
-        </div>
-        <div
-          style={{
-            height: '30%',
-            width: '70%',
-            display: 'flex',
-            justifyContent: 'right',
-            marginTop: '10px',
-            marginRight: '30px',
-          }}
-        >
-          <label
-            style={{
-              fontSize: '15px',
-              color: 'white',
-            }}
-          >
-            Thong ke truy cap
-          </label>
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          height: '6%',
-          width: '76%',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          backgroundColor: 'lightblue',
-        }}
-      >
-        <label
-          style={{
-            marginTop: '15px',
-            fontSize: '12px',
-            color: 'white',
-          }}
-        >
-          Bản quyền 2024 - Trường Đại học Công nghiệp TP. Hồ Chí Minh
-        </label>
-      </div>
+      <Footer />
     </div>
   )
 }
