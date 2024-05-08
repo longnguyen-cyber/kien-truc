@@ -21,9 +21,24 @@ export class ClassService {
 
   async getAllClasses() {
     const rs = await this.classRepository.getAll()
-    return rs.map((item) => {
-      return this.commonService.deleteField(item, ['subject_id'])
-    })
+    const final = await Promise.all(
+      rs.map(async (item) => {
+        const prerequisites = await this.subjectService.getSubjectById(
+          item.subject_id,
+        )
+        return this.commonService.deleteField(
+          {
+            ...item,
+            subject: {
+              ...item.subject,
+              ...prerequisites,
+            },
+          },
+          ['subject_id', 'prerequisite_id'],
+        )
+      }),
+    )
+    return final
   }
 
   async checkCapacityOfClass(classId: number) {

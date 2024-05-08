@@ -42,8 +42,6 @@ export class SubjectCreateDto {
   @IsNotEmpty()
   @IsBoolean()
   isRequired: boolean
-  // theory        Int
-  // practice      Int
 
   @ApiProperty({
     example: 3,

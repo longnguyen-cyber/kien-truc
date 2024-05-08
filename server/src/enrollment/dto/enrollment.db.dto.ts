@@ -10,11 +10,5 @@ export class EnrollmentToDBDto {
   @IsNotEmpty()
   class_id: number
 
-  @ApiProperty({
-    example: 234433,
-    description: 'id of the student when create the enrollment',
-  })
-  @IsNumber()
-  @IsNotEmpty()
   student_id: number
 }

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { CommonService } from '../common/common.service'
 import { EnrollmentService } from './enrollment.service'
@@ -14,7 +14,12 @@ export class EnrollmentController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async create(@Body() data: EnrollmentToDBDto) {
+  async create(@Body() raw: EnrollmentToDBDto, @Req() req: any) {
+    const data = {
+      student_id: req.user.student_id,
+      class_id: raw.class_id,
+    }
+    console.log(data)
     const rs = await this.enrollmentService.create(data)
     if (rs) {
       return {

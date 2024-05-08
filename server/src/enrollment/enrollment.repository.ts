@@ -31,7 +31,14 @@ export class EnrollmentRepository {
       return false
     }
 
-    return true
+    const rs = await this.prisma.enrollment.create({
+      data: {
+        student_id: data.student_id,
+        class_id: data.class_id,
+        status: EnrollmentEnum.PENDING,
+      },
+    })
+    return rs
   }
 
   private async checkSumOfCredit(studentId: number, creditOfSubject: number) {
