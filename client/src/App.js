@@ -6,18 +6,21 @@ import Login from './layout/auth/Login'
 import ErrorPage from './layout/ErrorPage'
 import Course from './layout/course/Course'
 import Profile from './layout/profile/Profile'
-import Schedule from './layout/schedule/Schedule'
+import Program from './layout/schedule/Program'
+import Dashboard from './layout/Dashboard'
+import Calendar from './layout/schedule/Schedule'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register-course" element={<Course />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/program" element={<Program />} />
+        <Route path="/schedule" element={<Calendar />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

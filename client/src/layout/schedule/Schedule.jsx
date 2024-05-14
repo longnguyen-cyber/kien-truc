@@ -1,132 +1,86 @@
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import FullCalendar from '@fullcalendar/react'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import React, { useEffect, useState } from 'react'
-import Header from '../Header'
-import UserApi from '../../api/user'
-import SubjectApi from '../../api/subject'
-import { FaCircleCheck } from 'react-icons/fa6'
+import ScheduleApi from '../../api/schedule'
+import { parseShiftToTime } from '../../utils/time'
 import Footer from '../Footer'
-const Schedule = () => {
-  const [subjects, setSubjects] = useState([])
+import Header from '../Header'
 
+function Calendar() {
+  const [calendar, setCalendar] = useState([])
   useEffect(() => {
-    const subjectsData = async () => {
-      // Call API to get subjects
-      const response = await SubjectApi.GetSubject()
-      if (response.status === 200) {
-        const subjectsResponse = response.data
-        setSubjects(subjectsResponse)
-      }
+    // Fetch data from server
+    const fetchData = async () => {
+      const response = await ScheduleApi.GetSchedule() // replace with your actual API endpoint
+      const data = response.data
+
+      // Map data to calendar events
+      const events = data.map((item) => {
+        const shift = item.shift
+        const {
+          start,
+          end,
+          shift: shiftLesson,
+        } = parseShiftToTime(shift - 1, item.time)
+
+        return {
+          title: item.class.subject.subject_name,
+          start,
+          end,
+          extendedProps: {
+            room: `Phòng: ${item.class.room_name}`,
+            teacher: `GV: ${item.class.professor_name}`,
+            tiet: `Tiết: ${shiftLesson}`,
+            class_name: item.class.class_name,
+            class_id: item.class.class_id,
+          },
+        }
+      })
+
+      setCalendar(events)
     }
-    subjectsData()
+
+    fetchData()
   }, [])
 
-  const Body = ({ props }) => {
-    const { term, subjects: subs } = props
-
-    // Divide subjects into required and optional
-    const requiredSubjects = subs.filter((subject) => subject.isRequired)
-    const optionalSubjects = subs.filter((subject) => !subject.isRequired)
-
-    // Function to render a row for a subject
-    const renderSubjectRow = (subject, index) => (
-      <tr
-        key={index}
-        className={`text-center ${
-          subject.status === true ? 'bg-gray-200' : 'bg-white'
-        }`}
-      >
-        <td className="border border-slate-700">{index + 1}</td>
-        <td className="border border-slate-700">{subject.subject_id}</td>
-        <td className="border border-slate-700">{subject.subject_name}</td>
-        <td className="border border-slate-700 text-red-700">
-          {subject.prerequisites
-            .map((item) => item.prerequisite_subject_id)
-            .join(', ')}
-        </td>
-        <td className="border border-slate-700">{subject.credits}</td>
-        <td className="border border-slate-700">{subject.theory}</td>
-        <td className="border border-slate-700">{subject.practice}</td>
-        <td className="border border-slate-700 ">
-          {subject.status === false ? (
-            ''
-          ) : (
-            <span className="flex justify-center text-green-500">
-              <FaCircleCheck />
-            </span>
-          )}
-        </td>
-      </tr>
-    )
-
+  const renderEventContent = (eventInfo) => {
     return (
-      <tbody>
-        <tr className="border border-slate-700 bg-cyan-500 text-white">
-          <td className="border border-slate-700 pl-2" colSpan={5}>
-            {term}
-          </td>
-          <td className="border border-slate-700 pl-2" colSpan={3}>
-            Tổng số tính chỉ:{' '}
-            {subs.reduce((total, subject) => total + subject.credits, 0)}
-          </td>
-        </tr>
-
-        {/* Render required subjects */}
-        <tr className="border border-slate-700 text-blue-600 font-bold bg-sky-200">
-          <td className="border border-slate-700 pl-2" colSpan={8}>
-            Học phần bắt buộc
-          </td>
-        </tr>
-        {requiredSubjects.map(renderSubjectRow)}
-
-        {/* Render optional subjects */}
-        {optionalSubjects.length > 0 && (
-          <tr className="border border-slate-700 text-blue-600 font-bold bg-sky-200">
-            <td className="border border-slate-700 pl-2" colSpan={8}>
-              Học phần tự chọn
-            </td>
-          </tr>
-        )}
-        {optionalSubjects.map(renderSubjectRow)}
-      </tbody>
+      <div className="p-1 bg-blue-500 w-[150px] -ml-[3px] -mt-[0.5px] rounded-md">
+        <strong className="text-base">{eventInfo.event.title}</strong>
+        <p>
+          {eventInfo.event.extendedProps.class_id} -{' '}
+          {eventInfo.event.extendedProps.class_name}{' '}
+        </p>
+        <p>{eventInfo.event.extendedProps.tiet}</p>
+        <p>{eventInfo.event.extendedProps.room}</p>
+        <p>{eventInfo.event.extendedProps.teacher}</p>
+      </div>
     )
   }
-
-  // Rest of your component remains unchanged
 
   return (
     <div>
       <Header />
-      <div className="w-3/4 mx-auto mt-4">
-        <table className="w-full">
-          <thead className="bg-blue-600">
-            <tr>
-              <th className="border border-slate-700">STT</th>
-              <th className="border border-slate-700">Mã môn học</th>
-              <th className="border border-slate-700">Tên môn học</th>
-              <th className="border border-slate-700">Học phần học trước</th>
-              <th className="border border-slate-700">Số TC/ĐVHT</th>
-              <th className="border border-slate-700">Số tiết lí thuyết</th>
-              <th className="border border-slate-700">Số tiết TH</th>
-              <th className="border border-slate-700">Đạt</th>
-            </tr>
-          </thead>
-
-          {subjects.length > 0 && (
-            <Body
-              props={{
-                term: 'Học kì 1',
-                subjects: subjects.filter((item) => item.term === '1-1st'),
-              }}
-            />
-          )}
-          {subjects.length > 0 && (
-            <Body
-              props={{
-                term: 'Học kì 2',
-                subjects: subjects.filter((item) => item.term === '2-1st'),
-              }}
-            />
-          )}
-        </table>
+      <br />
+      <div className="mx-auto w-3/4">
+        <FullCalendar
+          allDaySlot={false}
+          contentHeight={770}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          headerToolbar={{
+            left: '',
+            center: '',
+            right: 'prev,next today,timeGridWeek',
+          }}
+          timeZone="local"
+          events={calendar}
+          slotMinTime="06:30:00"
+          slotMaxTime="20:40:00"
+          eventContent={renderEventContent}
+        />
       </div>
       <br />
       <Footer />
@@ -134,4 +88,4 @@ const Schedule = () => {
   )
 }
 
-export default Schedule
+export default Calendar

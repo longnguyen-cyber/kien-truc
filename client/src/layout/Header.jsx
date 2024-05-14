@@ -4,14 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import UserApi from '../api/user'
 const Header = () => {
   const navigate = useNavigate()
-  const profile = () => {
-    navigate('/profile')
-  }
+
   const registercourse = () => {
     navigate('/register-course')
   }
-  const schedule = () => {
-    navigate('/schedule')
+  const program = () => {
+    navigate('/program')
   }
 
   const logout = () => {
@@ -68,13 +66,33 @@ const Header = () => {
           </button>
         </div>
 
-        <div className="my-auto ml-4 text-blue-500">
-          <button onClick={profile}>THÔNG TIN SINH VIÊN</button>
-          <div>
+        <div className="my-auto ml-4 text-blue-500 grid grid-cols-2 space-x-10">
+          <div className="flex flex-col items-start">
+            <button
+              onClick={() => {
+                navigate('/')
+              }}
+            >
+              THÔNG TIN SINH VIÊN
+            </button>
             <button onClick={registercourse}>ĐĂNG KÝ HỌC PHẦN</button>
+            <button onClick={program}>CHƯƠNG TRÌNH KHUNG</button>
           </div>
-          <div>
-            <button onClick={schedule}>CHƯƠNG TRÌNH KHUNG</button>
+          <div className="flex flex-col items-start">
+            <button
+              onClick={() => {
+                navigate('/profile')
+              }}
+            >
+              THÔNG TIN HỌC TẬP
+            </button>
+            <button
+              onClick={() => {
+                navigate('/schedule')
+              }}
+            >
+              XEM LỊCH HỌC
+            </button>
           </div>
         </div>
       </div>

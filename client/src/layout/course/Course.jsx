@@ -30,7 +30,145 @@ const Course = () => {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value)
   }
-  const [selectedRow, setSelectedRow] = useState(null)
+  const [selectedSubject, setSelectedSubject] = useState(null)
+
+  const [selectedDetail, setSelectedDetail] = useState(null)
+  const RenderClass = ({ classes }) => {
+    return (
+      <div className="mx-auto w-full mt-8">
+        <p className="font-bold text-xl mb-2">Lớp học phần chờ đăng ký</p>
+
+        <table className="w-full">
+          <thead className="bg-blue-600">
+            <tr>
+              <th className="border border-slate-700 w-8"></th>
+              <th className="border border-slate-700">STT</th>
+              <th className="border border-slate-700">Mã LHP</th>
+              <th className="border border-slate-700">Tên lớp học phần</th>
+              <th className="border border-slate-700">Sĩ số tối đa</th>
+              <th className="border border-slate-700">Đã đăng ký</th>
+              <th className="border border-slate-700">Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classes.map((c, index) => {
+              const subject = c.subject
+              return (
+                <tr
+                  key={index}
+                  // className={`text-center ${
+                  //   selectedRow === index ? 'bg-blue-200' : ''
+                  // }`}
+                  // onClick={() => setSelectedRow(index)}
+                  className={`text-center ${
+                    selectedDetail &&
+                    selectedDetail.class.class_id === c.class_id
+                      ? 'bg-blue-200'
+                      : ''
+                  }`}
+                  onClick={() => setSelectedDetail({ class: c })}
+                >
+                  <td className="border border-slate-700">
+                    <input
+                      type="radio"
+                      // checked={selectedRow === index}
+                      // onChange={() => setSelectedRow(index)}
+                      checked={
+                        selectedDetail &&
+                        selectedDetail.class.class_id === c.class_id
+                      }
+                      onChange={() => setSelectedDetail({ class: c })}
+                    />
+                  </td>
+                  <td className="border border-slate-700">{index + 1}</td>
+                  <td className="border border-slate-700">{c.class_id}</td>
+                  <td className="border border-slate-700">
+                    {subject.subject_name}
+                  </td>
+                  <td className="border border-slate-700">{c.max_capacity}</td>
+                  <td className="border border-slate-700">
+                    {c.current_capacity}
+                  </td>
+                  <td className="border border-slate-700">
+                    {c.isEnrolling ? 'Chờ đăng ký' : 'Đã đóng'}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  const [selectedFinal, setSelectedFinal] = useState(null)
+  const RenderDetailClass = ({ classes }) => {
+    const details = classes.details
+    return (
+      <div className="mx-auto w-full mt-8">
+        <p className="font-bold text-xl mb-2">Chi tiết lớp học phần</p>
+
+        <table className="w-full">
+          <thead className="bg-blue-600">
+            <tr>
+              <th className="border border-slate-700 w-8"></th>
+              <th className="border border-slate-700">STT</th>
+              <th className="border border-slate-700">Lịch học</th>
+              <th className="border border-slate-700">Nhóm TH</th>
+              <th className="border border-slate-700">Phòng</th>
+              <th className="border border-slate-700">Dãy nhà</th>
+              <th className="border border-slate-700">Giảng viên</th>
+            </tr>
+          </thead>
+          <tbody>
+            {details.map((d, index) => {
+              return (
+                <tr
+                  key={index}
+                  // className={`text-center ${
+                  //   selectedRow === index ? 'bg-blue-200' : ''
+                  // }`}
+                  // onClick={() => setSelectedRow(index)}
+                  className={`text-center ${
+                    selectedFinal &&
+                    selectedFinal.class_detail_id === d.class_detail_id
+                      ? 'bg-blue-200'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    setSelectedFinal(d)
+                  }}
+                >
+                  <td className="border border-slate-700">
+                    <input
+                      type="radio"
+                      // checked={selectedRow === index}
+                      // onChange={() => setSelectedRow(index)}
+                      checked={
+                        selectedFinal &&
+                        selectedFinal.class_detail_id === d.class_detail_id
+                      }
+                      onChange={() => setSelectedFinal(d)}
+                    />
+                  </td>
+                  <td className="border border-slate-700">{index + 1}</td>
+                  <td className="border border-slate-700">{d.study_time}</td>
+                  <td className="border border-slate-700">
+                    {d.group_practice}
+                  </td>
+                  <td className="border border-slate-700">{d.room_name}</td>
+                  <td className="border border-slate-700">{d.towner}</td>
+                  <td className="border border-slate-700">
+                    {classes.professor_name}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -122,27 +260,41 @@ const Course = () => {
             </tr>
           </thead>
           {classes.map((c, index) => {
+            const subject = c.subject
             return (
               <tr
                 key={index}
                 className={`text-center ${
-                  selectedRow === index ? 'bg-blue-200' : ''
+                  selectedSubject &&
+                  selectedSubject.subject.subject_id === subject.subject_id
+                    ? 'bg-blue-200'
+                    : ''
                 }`}
-                onClick={() => setSelectedRow(index)}
+                onClick={() => {
+                  setSelectedSubject(c)
+                  setSelectedDetail(null)
+                }}
               >
                 <td className="border border-slate-700">
                   <input
                     type="radio"
-                    checked={selectedRow === index}
-                    onChange={() => setSelectedRow(index)}
+                    checked={
+                      selectedSubject &&
+                      selectedSubject.subject.subject_id === subject.subject_id
+                    }
+                    onChange={() => setSelectedSubject(index)}
                   />
                 </td>
                 <td className="border border-slate-700">{index + 1}</td>
-                <td className="border border-slate-700">{c.class_id}</td>
-                <td className="border border-slate-700">{c.class_name}</td>
-                <td className="border border-slate-700">{c.subject.credits}</td>
                 <td className="border border-slate-700">
-                  {c.subject.isRequired ? (
+                  {subject.subject_id}
+                </td>
+                <td className="border border-slate-700">
+                  {subject.subject_name}
+                </td>
+                <td className="border border-slate-700">{subject.credits}</td>
+                <td className="border border-slate-700">
+                  {subject.isRequired ? (
                     <span className="flex justify-center text-green-500">
                       <FaCircleCheck />
                     </span>
@@ -153,7 +305,7 @@ const Course = () => {
                   )}
                 </td>
                 <td className="border border-slate-700 text-red-600">
-                  {c.subject.prerequisites
+                  {subject.prerequisites
                     .map((item) => item.prerequisite_subject_id)
                     .join(', ')}
                 </td>
@@ -161,20 +313,22 @@ const Course = () => {
             )
           })}
         </table>
+        {selectedSubject && <RenderClass classes={selectedSubject.class} />}
+        {selectedDetail && <RenderDetailClass classes={selectedDetail.class} />}
         <button
           onClick={() => {
-            const classId = classes[selectedRow].class_id
-            CourseApi.enrollCourse({ class_id: classId }).then((res) => {
-              if (res.status === 201) {
-                alert('Đăng ký học phần thành công')
-              } else {
-                alert('Đăng ký học phần thất bại')
-              }
-            })
+            const classId = selectedFinal.class_id
+            // CourseApi.enrollCourse({ class_id: classId }).then((res) => {
+            //   if (res.status === 201) {
+            //     alert('Đăng ký học phần thành công')
+            //   } else {
+            //     alert('Đăng ký học phần thất bại')
+            //   }
+            // })
           }}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit mx-auto mt-4"
         >
-          Đắng ký
+          Đăng ký
         </button>
       </div>
       <Footer />

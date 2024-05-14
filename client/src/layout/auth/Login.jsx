@@ -26,7 +26,7 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
     if (token) {
-      navigate('/profile')
+      navigate('/')
       return
     }
   }, [])
@@ -50,7 +50,7 @@ const Login = () => {
       }
       setTokenToLocalStorage(response.data.token)
       localStorage.setItem('user', JSON.stringify(userLocal))
-      navigate('/profile')
+      navigate('/')
     }
   }
   return (
