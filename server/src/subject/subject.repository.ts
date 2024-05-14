@@ -7,6 +7,7 @@ export class SubjectRepository {
   constructor(private prisma: PrismaService) {}
 
   async createSubject(data: SubjectToDBDto) {
+    console.log(data)
     return this.prisma.subject.create({
       data: {
         subject_id: this.generateSubjectId(),

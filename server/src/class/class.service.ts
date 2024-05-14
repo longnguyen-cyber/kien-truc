@@ -4,14 +4,19 @@ import { ClassRepository } from './class.repository'
 import { ClassToDBDto } from './dto/class.db.dto'
 import { SubjectService } from '../subject/subject.service'
 import { GradeService } from '../grade/grade.service'
+import { InjectQueue } from '@nestjs/bull'
+import { Queue as QueueEmail } from 'bull'
 
 @Injectable()
 export class ClassService {
+  private readonly TIME_STUDY = ['1-3', '4-6', '7-9', '10-12', '13-15']
   constructor(
     private readonly classRepository: ClassRepository,
     private readonly commonService: CommonService,
     private readonly subjectService: SubjectService,
     private readonly gradeService: GradeService,
+    @InjectQueue('queue')
+    private readonly mailQueue: QueueEmail,
   ) {}
 
   async createClass(data: ClassToDBDto) {
@@ -26,6 +31,7 @@ export class ClassService {
         const prerequisites = await this.subjectService.getSubjectById(
           item.subject_id,
         )
+
         return this.commonService.deleteField(
           {
             ...item,
@@ -34,11 +40,57 @@ export class ClassService {
               ...prerequisites,
             },
           },
-          ['subject_id', 'prerequisite_id'],
+          ['prerequisite_id'],
         )
       }),
     )
+    const groupBySubjectId = this.groupBySubjectId(final)
+    return groupBySubjectId
+  }
+
+  private groupBySubjectId = (data: any) => {
+    const result = []
+    const map = new Map()
+
+    for (const item of data) {
+      if (!map.has(item.subject_id)) {
+        map.set(item.subject.subject_id, [])
+        result.push(map.get(item.subject.subject_id))
+      }
+      map.get(item.subject.subject_id).push(item)
+    }
+    const final = []
+
+    result.map((item) => {
+      const obj = {}
+      obj['class'] = item
+      obj['subject'] = item[0].subject
+
+      final.push(obj)
+    })
+
     return final
+  }
+
+  async closeRegisterClass(subject_id: number) {
+    const rs = await this.classRepository.closeRegister(subject_id)
+    if (rs) {
+      rs.map(async (item) => {
+        await this.mailQueue.add(
+          'register',
+          {
+            to: item.email,
+            name: item.student_name,
+          },
+          {
+            removeOnComplete: true,
+          },
+        )
+      })
+      return true
+    } else {
+      return false
+    }
   }
 
   async checkCapacityOfClass(classId: number) {

@@ -11,7 +11,6 @@ import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer'
 import { BullModule } from '@nestjs/bull'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
-import { ScheduleModule } from '@nestjs/schedule'
 import { join } from 'path'
 import { CommonService } from './common/common.service'
 import { Valid } from './utils/validUser'
@@ -21,6 +20,7 @@ import { SubjectModule } from './subject/subject.module'
 import { AppController } from './app.controller'
 import { ClassModule } from './class/class.module'
 import { GradeModule } from './grade/grade.module'
+import { ScheduleModule  } from './schedule/schedule.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -95,8 +95,8 @@ import { GradeModule } from './grade/grade.module'
       inject: [ConfigService],
     }),
     AuthModule,
-    ScheduleModule.forRoot(),
     SubjectModule,
+    ScheduleModule,
   ],
   providers: [
     CommonService,

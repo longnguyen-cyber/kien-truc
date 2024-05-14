@@ -18,8 +18,8 @@ export class EnrollmentController {
     const data = {
       student_id: req.user.student_id,
       class_id: raw.class_id,
+      class_detail_id: raw.class_detail_id,
     }
-    console.log(data)
     const rs = await this.enrollmentService.create(data)
     if (rs) {
       return {

@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -18,8 +19,8 @@ export class GradeController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async findAll() {
-    const rs = await this.gradeService.findAll()
+  async findAll(@Req() req: any) {
+    const rs = await this.gradeService.findAll(req.user.student_id)
     if (rs) {
       return {
         status: HttpStatus.OK,
@@ -35,8 +36,11 @@ export class GradeController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async uploadGrade(@Body() data: GradeToDBDto) {
-    const rs = this.gradeService.uploadGrade(data)
+  async uploadGrade(@Body() data: GradeToDBDto, @Req() req: any) {
+    const rs = this.gradeService.uploadGrade({
+      ...data,
+      student_id: req.user.student_id,
+    })
     if (rs) {
       return {
         status: HttpStatus.CREATED,

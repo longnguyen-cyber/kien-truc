@@ -3,10 +3,11 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiProperty, ApiTags } from '@nestjs/swagger'
 
 import { ClassService } from './class.service'
 import { AuthGuard } from '../auth/guard/auth.guard'
@@ -42,6 +43,23 @@ export class ClassController {
       status: HttpStatus.OK,
       message: 'Get all subjects success',
       data: rs,
+    }
+  }
+
+  @Post('close-register/:subject_id')
+  @UseGuards(AuthGuard)
+  async closeRegisterClass(@Param('subject_id') subject_id: string) {
+    const rs = await this.classService.closeRegisterClass(parseInt(subject_id))
+    if (rs) {
+      return {
+        status: HttpStatus.OK,
+        message: 'Close register success',
+      }
+    } else {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Close register fail',
+      }
     }
   }
 }

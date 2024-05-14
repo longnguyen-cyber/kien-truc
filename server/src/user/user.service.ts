@@ -17,6 +17,7 @@ import { RegisterDTO } from './dto/register.dto'
 import { UserUpdateDto } from './dto/userUpdate.dto'
 import { UserCheck } from './user.check'
 import { UserRepository } from './user.repository'
+import { SubjectService } from '../subject/subject.service'
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -29,6 +30,7 @@ export class UserService implements OnModuleInit {
     private userCheck: UserCheck,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly configService: ConfigService,
+    private readonly subjectService: SubjectService,
   ) {}
   async onModuleInit() {
     this.updateCacheUser()
@@ -42,7 +44,7 @@ export class UserService implements OnModuleInit {
   }
 
   async login({ code, password }: any): Promise<any> {
-    const user = await this.checkLoginData(code, password)
+    const user = await this.checkLoginData(parseInt(code), password)
 
     const token = this.authService.generateJWT(code)
     await this.cacheManager.set(token, JSON.stringify(user), {
@@ -57,11 +59,16 @@ export class UserService implements OnModuleInit {
 
   async getUser(code: number) {
     const user = await this.userRepository.getUserCode(code)
+    const subjects = await this.subjectService.getAllSubjects(user.student_id)
+    const subjectPass = subjects.filter((item: any) => item.status === true)
+    console.log('subjectPass', subjectPass)
     const result = this.commonService.deleteField(
       {
-        user,
+        ...user,
+        numberSubjectPass: subjectPass.length,
+        education: user.education[0],
       },
-      ['student_id'],
+      ['student_id', 'education_id'],
     )
     return result
   }

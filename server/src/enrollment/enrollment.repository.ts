@@ -30,9 +30,9 @@ export class EnrollmentRepository {
       console.log('student already enrolled in this class')
       return false
     }
-
     const rs = await this.prisma.enrollment.create({
       data: {
+        class_detail_id: data.class_detail_id,
         student_id: data.student_id,
         class_id: data.class_id,
         status: EnrollmentEnum.PENDING,

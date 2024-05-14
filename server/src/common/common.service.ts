@@ -98,4 +98,12 @@ export class CommonService {
       return false
     }
   }
+  formatDate(date: Date): string {
+    const d = new Date(date)
+    const month = ('0' + (d.getMonth() + 1)).slice(-2) // Months are 0 based, so +1 and pad with 0s
+    const day = ('0' + d.getDate()).slice(-2)
+    const year = d.getFullYear()
+
+    return `${month}/${day}/${year}`
+  }
 }

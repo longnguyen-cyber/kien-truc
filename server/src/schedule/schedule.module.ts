@@ -1,27 +1,18 @@
 import { CacheModule, Module } from '@nestjs/common'
+import { ScheduleService } from './schedule.service'
+import { ScheduleController } from './schedule.controller'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as redisStore from 'cache-manager-redis-store'
-import { CommonModule } from '../common/common.module'
+import { ScheduleRepository } from './schedule.repository'
 import { PrismaModule } from '../prisma/prisma.module'
-import { ClassController } from './class.controller'
-import { ClassRepository } from './class.repository'
-import { ClassService } from './class.service'
-import { SubjectModule } from '../subject/subject.module'
-import { GradeModule } from '../grade/grade.module'
-import { BullModule } from '@nestjs/bull'
+import { CommonModule } from '../common/common.module'
 
 @Module({
-  controllers: [ClassController],
-  providers: [ClassService, ClassRepository],
+  controllers: [ScheduleController],
+  providers: [ScheduleService, ScheduleRepository],
   imports: [
     PrismaModule,
     CommonModule,
-    ConfigModule,
-    SubjectModule,
-    GradeModule,
-    BullModule.registerQueue({
-      name: 'queue',
-    }),
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -35,6 +26,5 @@ import { BullModule } from '@nestjs/bull'
       }),
     }),
   ],
-  exports: [ClassService],
 })
-export class ClassModule {}
+export class ScheduleModule {}

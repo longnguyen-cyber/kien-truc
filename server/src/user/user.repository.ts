@@ -27,6 +27,9 @@ export class UserRepository {
       where: {
         code,
       },
+      include: {
+        education: true,
+      },
     })
     return user
   }
@@ -35,7 +38,13 @@ export class UserRepository {
     const user = await prisma.student.create({
       data: {
         ...userCreateDto,
+        student_id: userCreateDto.code,
         status: 'active',
+        education: {
+          create: {
+            ...userCreateDto.education,
+          },
+        },
       },
     })
 
