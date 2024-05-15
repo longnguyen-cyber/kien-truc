@@ -33,32 +33,37 @@ export class ClassService {
       class_details,
     }
     console.log(inputData)
-    // const rs = await this.classRepository.create({
-    //   ...data,
-    //   class_id: this.commonService.generateId(),
-    // })
-    // return rs
+    const rs = await this.classRepository.create(inputData)
+    return rs
   }
 
-  async getAllClasses() {
+  async getAllClasses(raw: string) {
+    const rawSplit = raw.split('-')
+    const term = rawSplit[0]
+    const year = rawSplit[1]
     const rs = await this.classRepository.getAll()
+    console.log(rs)
     const final = await Promise.all(
-      rs.map(async (item) => {
-        const prerequisites = await this.subjectService.getSubjectById(
-          item.subject_id,
-        )
+      rs
+        .filter((item) => {
+          return item.term === parseInt(term) && item.year === parseInt(year)
+        })
+        .map(async (item) => {
+          const prerequisites = await this.subjectService.getSubjectById(
+            item.subject_id,
+          )
 
-        return this.commonService.deleteField(
-          {
-            ...item,
-            subject: {
-              ...item.subject,
-              ...prerequisites,
+          return this.commonService.deleteField(
+            {
+              ...item,
+              subject: {
+                ...item.subject,
+                ...prerequisites,
+              },
             },
-          },
-          ['prerequisite_id'],
-        )
-      }),
+            ['prerequisite_id'],
+          )
+        }),
     )
     const groupBySubjectId = this.groupBySubjectId(final)
     return groupBySubjectId

@@ -70,4 +70,39 @@ export class EnrollmentRepository {
       return false
     }
   }
+
+  async getAllEnrollments(studentId: number) {
+    const data = await this.prisma.enrollment.findMany({
+      where: {
+        student_id: studentId,
+        status: EnrollmentEnum.PENDING,
+      },
+      include: {
+        class: {
+          include: {
+            subject: true,
+          },
+        },
+      },
+    })
+
+    const final = await Promise.all(
+      data.map(async (item) => {
+        const class_detail = await this.prisma.classDetail.findFirst({
+          where: {
+            class_id: item.class_id,
+            class_detail_id: item.class_detail_id,
+          },
+        })
+        return {
+          ...item,
+          class: {
+            ...item.class,
+            class_detail,
+          },
+        }
+      }),
+    )
+    return final
+  }
 }

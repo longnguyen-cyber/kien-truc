@@ -9,6 +9,7 @@ import {
 } from 'class-validator'
 
 export class ClassDetailCreateDto {
+  class_detail_id: number
   @ApiProperty({
     example: 'LT - Thứ 5(T10 -> T12)',
     description: 'time of the class',

@@ -8,27 +8,26 @@ export class ClassRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(data: ClassToDBDto) {
-    console.log(data)
-    // return await this.prisma.class.create({
-    //   data: {
-    //     class_id: data.class_id,
-    //     max_capacity: data.max_capacity,
-    //     current_capacity: 0,
-    //     professor_name: data.professor_name,
-    //     class_name: data.class_name,
-    //     term: data.term,
-    //     isEnrolling: true,
-    //     year: data.year,
-    //     subject: {
-    //       connect: {
-    //         subject_id: data.subject_id,
-    //       },
-    //     },
-    //     details: {
-    //       create: data.class_details,
-    //     },
-    //   },
-    // })
+    return await this.prisma.class.create({
+      data: {
+        class_id: data.class_id,
+        max_capacity: data.max_capacity,
+        current_capacity: 0,
+        professor_name: data.professor_name,
+        class_name: data.class_name,
+        term: data.term,
+        isEnrolling: true,
+        year: data.year,
+        subject: {
+          connect: {
+            subject_id: data.subject_id,
+          },
+        },
+        details: {
+          create: data.class_details,
+        },
+      },
+    })
   }
 
   async getAll() {
@@ -51,6 +50,7 @@ export class ClassRepository {
         isEnrolling: false,
       },
     })
+
     if (updated.count === 0) {
       return false
     }

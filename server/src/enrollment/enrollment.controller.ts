@@ -1,6 +1,14 @@
 /* eslint-disable prettier/prettier */
 
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { CommonService } from '../common/common.service'
 import { EnrollmentService } from './enrollment.service'
@@ -30,6 +38,27 @@ export class EnrollmentController {
       return {
         status: 400,
         message: 'Create fail',
+      }
+    }
+  }
+
+  @Get(':term')
+  @UseGuards(AuthGuard)
+  async getAllEnrollments(@Req() req: any, @Param('term') term: string) {
+    const rs = await this.enrollmentService.getAllEnrollments(
+      req.user.student_id,
+      term,
+    )
+    if (rs) {
+      return {
+        status: 200,
+        data: rs,
+      }
+    } else {
+      return {
+        status: 400,
+        message: 'Get all enrollments fail',
+        data: [],
       }
     }
   }

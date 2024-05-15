@@ -49,4 +49,17 @@ export class EnrollmentService {
       creditOfSubject,
     )
   }
+
+  async getAllEnrollments(student_id: number, raw: string) {
+    const rawSplit = raw.split('-')
+    const term = rawSplit[0]
+    const year = rawSplit[1]
+    const rs = await this.enrollmentRepository.getAllEnrollments(student_id)
+    const final = rs.filter((item) => {
+      return (
+        item.class.term === parseInt(term) && item.class.year === parseInt(year)
+      )
+    })
+    return final
+  }
 }

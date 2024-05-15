@@ -35,10 +35,10 @@ export class ClassController {
     }
   }
 
-  @Get()
+  @Get(':term')
   @UseGuards(AuthGuard)
-  async getAllClasses() {
-    const rs = await this.classService.getAllClasses()
+  async getAllClasses(@Param('term') term: string) {
+    const rs = await this.classService.getAllClasses(term)
     return {
       status: HttpStatus.OK,
       message: 'Get all subjects success',

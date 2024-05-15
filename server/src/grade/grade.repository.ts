@@ -100,6 +100,20 @@ export class GradeRepository {
       },
     })
     const digit = this.calculateDigitScore(data, subject.credits)
+    const exist = await this.prisma.grade.findFirst({
+      where: {
+        student_id: data.student_id,
+        subject_id: data.subject_id,
+      },
+      select: {
+        final: true,
+      },
+    })
+    if (exist.final > 4) {
+      // student pass this subject
+      return false
+    }
+    // student fail this subject or first time
     const rs = await this.prisma.grade.create({
       data: {
         digit_score: digit,
