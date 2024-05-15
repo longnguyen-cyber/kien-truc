@@ -20,8 +20,24 @@ export class ClassService {
   ) {}
 
   async createClass(data: ClassToDBDto) {
-    const rs = await this.classRepository.create(data)
-    return rs
+    const class_details = data.class_details.map((item) => {
+      return {
+        ...item,
+        class_detail_id: this.commonService.generateId(),
+      }
+    })
+
+    const inputData = {
+      ...data,
+      class_id: this.commonService.generateId(),
+      class_details,
+    }
+    console.log(inputData)
+    // const rs = await this.classRepository.create({
+    //   ...data,
+    //   class_id: this.commonService.generateId(),
+    // })
+    // return rs
   }
 
   async getAllClasses() {

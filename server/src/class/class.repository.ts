@@ -7,30 +7,28 @@ import { EnrollmentEnum } from 'src/enums'
 export class ClassRepository {
   constructor(private prisma: PrismaService) {}
 
-  private generateClassId() {
-    return Math.floor(100000 + Math.random() * 900000)
-  }
   async create(data: ClassToDBDto) {
-    return await this.prisma.class.create({
-      data: {
-        class_id: this.generateClassId(),
-        max_capacity: data.max_capacity,
-        current_capacity: 0,
-        professor_name: data.professor_name,
-        class_name: data.class_name,
-        term: data.term,
-        isEnrolling: true,
-        year: data.year,
-        subject: {
-          connect: {
-            subject_id: data.subject_id,
-          },
-        },
-        details: {
-          create: data.class_details,
-        },
-      },
-    })
+    console.log(data)
+    // return await this.prisma.class.create({
+    //   data: {
+    //     class_id: data.class_id,
+    //     max_capacity: data.max_capacity,
+    //     current_capacity: 0,
+    //     professor_name: data.professor_name,
+    //     class_name: data.class_name,
+    //     term: data.term,
+    //     isEnrolling: true,
+    //     year: data.year,
+    //     subject: {
+    //       connect: {
+    //         subject_id: data.subject_id,
+    //       },
+    //     },
+    //     details: {
+    //       create: data.class_details,
+    //     },
+    //   },
+    // })
   }
 
   async getAll() {

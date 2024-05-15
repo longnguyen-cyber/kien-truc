@@ -86,6 +86,10 @@ export class UserService implements OnModuleInit {
       ...data,
       code,
       password: passwordHashed,
+      education: {
+        ...data.education,
+        education_id: this.commonService.generateId(),
+      },
     }
     const userCreated = await this.userRepository.createUser(dataCreate)
     if (userCreated) {

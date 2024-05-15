@@ -11,7 +11,18 @@ export class SubjectService {
   ) {}
 
   async createSubject(data: SubjectToDBDto) {
-    return this.subjectRepository.createSubject(data)
+    return this.subjectRepository.createSubject({
+      prerequisites: data.prerequisites.map((item) => {
+        return {
+          ...item,
+          prerequisite_id: this.commonService.generateId(),
+        }
+      }),
+      subject: {
+        ...data.subject,
+        subject_id: this.commonService.generateId(),
+      },
+    })
   }
 
   async getAllSubjects(student_id: number) {

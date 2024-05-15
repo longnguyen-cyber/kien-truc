@@ -113,7 +113,6 @@ export class GradeRepository {
       },
     })
     return rs
-    return true
   }
 
   async getEnrolledSubjects(studentId: number) {

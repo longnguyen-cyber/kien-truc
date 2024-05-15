@@ -41,7 +41,12 @@ export class EnrollmentService {
       console.log('prerequisite not met')
       return false
     }
-
-    return await this.enrollmentRepository.create(data, creditOfSubject)
+    return await this.enrollmentRepository.create(
+      {
+        ...data,
+        enrollment_id: this.commonService.generateId(),
+      },
+      creditOfSubject,
+    )
   }
 }

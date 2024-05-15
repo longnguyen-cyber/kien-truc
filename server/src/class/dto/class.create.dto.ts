@@ -9,6 +9,8 @@ import {
 } from 'class-validator'
 
 export class ClassCreateDto {
+  class_id: number
+
   @ApiProperty({
     example: 100,
     description: 'Max capacity of the class',

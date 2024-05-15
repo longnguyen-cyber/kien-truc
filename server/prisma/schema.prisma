@@ -21,7 +21,7 @@ model Subject {
 }
 
 model Prerequisite {
-  prerequisite_id         Int     @id @default(autoincrement())
+  prerequisite_id         Int     @id
   prerequisite_subject_id Int
   subject_id              Int
   subject                 Subject @relation(fields: [subject_id], references: [subject_id])
@@ -45,7 +45,7 @@ model Student {
 
 // Course, Training level, Sector, Faculty, Class, Training type, Specialization, Facility,identifier class
 model Education {
-  education_id     Int      @id @default(autoincrement())
+  education_id     Int      @id
   course           String
   training_level   String
   sector           String
@@ -76,7 +76,7 @@ model Class {
 }
 
 model ClassDetail {
-  class_detail_id Int    @id @default(autoincrement())
+  class_detail_id Int    @id
   class_id        Int
   class           Class  @relation(fields: [class_id], references: [class_id])
   study_time      String
@@ -86,7 +86,7 @@ model ClassDetail {
 }
 
 model Enrollment {
-  enrollment_id       Int      @id @default(autoincrement())
+  enrollment_id       Int      @id
   student_id          Int
   class_id            Int
   class_detail_id     Int
@@ -98,7 +98,7 @@ model Enrollment {
 }
 
 model Grade {
-  grade_id     Int     @id @default(autoincrement())
+  grade_id     Int     @id
   student_id   Int
   subject_id   Int
   midterm      Float
@@ -120,7 +120,7 @@ model Grade {
 }
 
 model Schedule {
-  schedule_id Int      @id @default(autoincrement())
+  schedule_id Int      @id
   student_id  Int
   class_id    Int
   time        DateTime

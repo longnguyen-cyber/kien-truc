@@ -106,4 +106,8 @@ export class CommonService {
 
     return `${month}/${day}/${year}`
   }
+
+  generateId() {
+    return Math.floor(100000 + Math.random() * 9000000)
+  }
 }

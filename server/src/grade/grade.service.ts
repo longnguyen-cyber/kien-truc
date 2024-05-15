@@ -131,14 +131,15 @@ export class GradeService {
   async uploadGrade(data: GradeToDBDto) {
     const dto = {
       letter_score: this.convertDigitToLetter(data.digit_score),
+      grade_id: this.commonService.generateId(),
       ...data,
     }
     const rs = await this.gradeRepository.uploadGrade(dto)
     if (rs) {
       if (this.commonService.checkDigitScore(data.digit_score)) {
-        // await this.studentService.updateUser(data.student_id, {
-        //   credit: rs.subject.credits,
-        // })
+        await this.studentService.updateUser(data.student_id, {
+          credit: rs.subject.credits,
+        })
       } else {
       }
       return true

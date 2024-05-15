@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsNumber, Max, Min } from 'class-validator'
 
 export class GradeCreateDto {
+  grade_id: number
   digit_score: number
 
   letter_score: string

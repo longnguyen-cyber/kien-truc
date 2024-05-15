@@ -32,6 +32,7 @@ export class EnrollmentRepository {
     }
     const rs = await this.prisma.enrollment.create({
       data: {
+        enrollment_id: data.enrollment_id,
         class_detail_id: data.class_detail_id,
         student_id: data.student_id,
         class_id: data.class_id,

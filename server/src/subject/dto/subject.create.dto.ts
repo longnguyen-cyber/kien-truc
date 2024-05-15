@@ -9,6 +9,8 @@ import {
 } from 'class-validator'
 
 export class SubjectCreateDto {
+  subject_id: number
+
   @ApiProperty({
     example: 'name',
     description: 'Name of the subject',

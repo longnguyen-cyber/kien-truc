@@ -20,7 +20,10 @@ export class ScheduleService {
   ) {}
 
   create(createScheduleDto: ScheduleToDBDto) {
-    return this.scheduleRepository.createSchedule(createScheduleDto)
+    return this.scheduleRepository.createSchedule({
+      ...createScheduleDto,
+      schedule_id: this.commonService.generateId(),
+    })
   }
 
   async findAll(student_id: number) {

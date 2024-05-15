@@ -3,6 +3,8 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator'
 
 export class EducationCreateDto {
+  education_id: number
+
   @ApiProperty({
     example: '2020-2021',
     description: 'Course of the student',

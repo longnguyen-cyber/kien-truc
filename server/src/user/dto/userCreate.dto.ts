@@ -4,6 +4,8 @@ import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator'
 import { EducationCreateDto } from './education.dto'
 
 export class UserCreateDto {
+  student_id?: number
+
   @ApiProperty({
     example: 'name',
     description: 'Name of the student',
