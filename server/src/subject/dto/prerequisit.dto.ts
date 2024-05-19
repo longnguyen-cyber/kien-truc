@@ -9,4 +9,6 @@ export class PrerequisiteCreateDto {
   @IsNotEmpty()
   @IsNumber()
   prerequisite_subject_id: number
+
+  prerequisite_id: number
 }

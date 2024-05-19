@@ -9,6 +9,8 @@ import {
 } from 'class-validator'
 
 export class ClassCreateDto {
+  class_id: number
+
   @ApiProperty({
     example: 100,
     description: 'Max capacity of the class',
@@ -50,12 +52,4 @@ export class ClassCreateDto {
   @IsNotEmpty()
   @IsString()
   class_name: string
-
-  @ApiProperty({
-    example: 'A.1',
-    description: 'Name of the room',
-  })
-  @IsNotEmpty()
-  @IsString()
-  room_name: string
 }

@@ -18,6 +18,7 @@ import { SubjectToDBDto } from './dto/subject.db.dto'
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
+  //fix role admin and student
   @Post()
   @UseGuards(AuthGuard)
   async createSubject(@Body() data: SubjectToDBDto) {

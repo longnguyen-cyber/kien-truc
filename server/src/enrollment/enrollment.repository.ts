@@ -30,8 +30,16 @@ export class EnrollmentRepository {
       console.log('student already enrolled in this class')
       return false
     }
-
-    return true
+    const rs = await this.prisma.enrollment.create({
+      data: {
+        enrollment_id: data.enrollment_id,
+        class_detail_id: data.class_detail_id,
+        student_id: data.student_id,
+        class_id: data.class_id,
+        status: EnrollmentEnum.PENDING,
+      },
+    })
+    return rs
   }
 
   private async checkSumOfCredit(studentId: number, creditOfSubject: number) {
@@ -61,5 +69,40 @@ export class EnrollmentRepository {
     } else {
       return false
     }
+  }
+
+  async getAllEnrollments(studentId: number) {
+    const data = await this.prisma.enrollment.findMany({
+      where: {
+        student_id: studentId,
+        status: EnrollmentEnum.PENDING,
+      },
+      include: {
+        class: {
+          include: {
+            subject: true,
+          },
+        },
+      },
+    })
+
+    const final = await Promise.all(
+      data.map(async (item) => {
+        const class_detail = await this.prisma.classDetail.findFirst({
+          where: {
+            class_id: item.class_id,
+            class_detail_id: item.class_detail_id,
+          },
+        })
+        return {
+          ...item,
+          class: {
+            ...item.class,
+            class_detail,
+          },
+        }
+      }),
+    )
+    return final
   }
 }

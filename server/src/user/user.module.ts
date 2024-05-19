@@ -11,6 +11,7 @@ import { UserCheck } from './user.check'
 import { UserController } from './user.controller'
 import { UserRepository } from './user.repository'
 import { UserService } from './user.service'
+import { SubjectModule } from '../subject/subject.module'
 @Module({
   controllers: [UserController],
   providers: [UserService, UserRepository, UserCheck, EmailConsumer],
@@ -19,6 +20,7 @@ import { UserService } from './user.service'
     PrismaModule,
     CommonModule,
     ConfigModule,
+    SubjectModule,
     JwtModule.register({
       secret: 'secret',
       signOptions: { expiresIn: '1d' },

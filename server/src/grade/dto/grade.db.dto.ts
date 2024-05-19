@@ -6,11 +6,7 @@ export class GradeToDBDto extends GradeCreateDto {
     example: 1,
     description: 'The id of the subject',
   })
-  subjectId: number
+  subject_id: number
 
-  @ApiProperty({
-    example: 1,
-    description: 'The id of the student',
-  })
-  studentId: number
+  student_id: number
 }

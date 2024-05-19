@@ -9,7 +9,7 @@ export class SubjectRepository {
   async createSubject(data: SubjectToDBDto) {
     return this.prisma.subject.create({
       data: {
-        subject_id: this.generateSubjectId(),
+        subject_id: data.subject.subject_id,
         subject_name: data.subject.subject_name,
         credits: data.subject.credits,
         isRequired: data.subject.isRequired,
@@ -21,10 +21,6 @@ export class SubjectRepository {
         },
       },
     })
-  }
-
-  private generateSubjectId() {
-    return Math.floor(100000 + Math.random() * 900000)
   }
 
   async getAllSubjects() {

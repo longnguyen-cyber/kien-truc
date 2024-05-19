@@ -46,8 +46,6 @@ export class UserController {
     @Body() userLoginDto: LoginDTO,
     @Res({ passthrough: true }) response: Response,
   ): Promise<Resp> {
-    console.log('login')
-    console.log('user', userLoginDto)
     const rs = await this.userService.login(userLoginDto)
     if (rs) {
       response.cookie('token', rs.token, {
@@ -98,7 +96,6 @@ export class UserController {
   @Post('logout')
   @UseGuards(AuthGuard)
   async logout(@Req() request: any): Promise<Resp> {
-    console.log('request', request.token)
     await this.userService.logout(request)
     //clear cookie
     request.res.clearCookie('token')
