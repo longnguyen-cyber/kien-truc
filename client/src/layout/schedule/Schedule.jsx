@@ -1,303 +1,93 @@
-import React from 'react'
-import Dashboard from '../Dashboard'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import FullCalendar from '@fullcalendar/react'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import React, { useEffect, useState } from 'react'
+import ScheduleApi from '../../api/schedule'
+import { parseShiftToTime } from '../../utils/time'
+import Footer from '../Footer'
+import Header from '../Header'
 
-const Schedule = () => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
-      <Dashboard />
-      <div
-        style={{
-          display: 'flex',
-          width: '76%',
-          border: '1px solid #e7dfdf',
-          marginTop: '20px',
-          borderRadius: '5px',
-          flexDirection: 'column'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            height: '20%',
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <label
-            style={{
-              fontSize: '20px',
-              marginTop: '10px',
-              color: 'blue',
-              fontWeight: 'bold'
-            }}
-          >
-            TRA CỨU CHƯƠNG TRÌNH KHUNG
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            marginTop: '15px'
-          }}
-        >
-          <label
-            style={{
-              color: 'orange',
-              fontWeight: 'bold'
-            }}
-          >
-            SINH VIÊN :{' '}
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            flexDirection: 'column'
-          }}
-        >
-          <label
-            style={{
-              display: 'flex',
-              width: '100%',
-              marginLeft: '100px',
-              fontSize: '14px',
-              color: 'blue',
-              marginTop: '10px'
-            }}
-          >
-            ĐẠI HỌC{' '}
-          </label>
-          <label
-            style={{
-              display: 'flex',
-              width: '100%',
-              marginLeft: '100px',
-              fontSize: '14px',
-              marginTop: '7px',
-              color: 'blue'
-            }}
-          >
-            KHÓA{' '}
-          </label>
-          <label
-            style={{
-              display: 'flex',
-              width: '100%',
-              marginLeft: '100px',
-              fontSize: '14px',
-              marginTop: '7px',
-              color: 'blue'
-            }}
-          >
-            CƠ SỞ{' '}
-          </label>
-          <label
-            style={{
-              display: 'flex',
-              width: '100%',
-              marginLeft: '100px',
-              fontSize: '14px',
-              marginTop: '7px',
-              color: 'blue'
-            }}
-          >
-            NGÀNH{' '}
-          </label>
-          <label
-            style={{
-              display: 'flex',
-              width: '100%',
-              marginTop: '7px',
-              marginLeft: '100px',
-              fontSize: '14px',
-              color: 'blue'
-            }}
-          >
-            CHUYÊN NGÀNH{' '}
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            marginTop: '15px'
-          }}
-        >
-          <label
-            style={{
-              color: 'orange',
-              fontWeight: 'bold'
-            }}
-          >
-            THÔNG TIN CHƯƠNG TRÌNH KHUNG
-          </label>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            height: '50%',
-            width: '100%',
-            flexDirection: 'row',
-            marginTop: '15px',
-            backgroundColor: '#316dc2ebe'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              width: '4%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              fontSize: '14px',
-              border: '0.5px solid grey',
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            STT
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '9%',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              textAlign: 'center',
-              fontSize: '14px',
-              border: '0.5px solid grey',
-              alignItems: 'center'
-            }}
-          >
-            Mã môn học
-          </div>
+function Calendar() {
+  const [calendar, setCalendar] = useState([])
+  useEffect(() => {
+    // Fetch data from server
+    const fetchData = async () => {
+      const response = await ScheduleApi.GetSchedule() // replace with your actual API endpoint
+      const data = response.data
 
-          <div
-            style={{
-              display: 'flex',
-              width: '30%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: '14px',
-              alignItems: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Tên môn học
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              width: '11%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              fontSize: '14px',
-              border: '0.5px solid grey',
-              alignItems: 'center'
-            }}
-          >
-            Mã học phần
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '17%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              border: '0.5px solid grey',
-              fontSize: '14px'
-            }}
-          >
-            Học phần: học trước(a), tiên quyết(b),song hành (c)
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '4%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              fontSize: '14px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Số TC/ĐVHT
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '5%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              alignItems: 'center',
-              fontSize: '14px',
-              justifyContent: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Số tiết LT
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '5%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              alignItems: 'center',
-              fontSize: '14px',
-              justifyContent: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Số tiết TH
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '4%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              alignItems: 'center',
-              fontSize: '14px',
-              justifyContent: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Đạt
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              width: '10%',
-              flexDirection: 'row',
-              textAlign: 'center',
-              alignItems: 'center',
-              fontSize: '14px',
-              justifyContent: 'center',
-              border: '0.5px solid grey'
-            }}
-          >
-            Đề cương môn học
-          </div>
-        </div>
+      // Map data to calendar events
+      const events = data.map((item) => {
+        const shift = item.shift
+        const {
+          start,
+          end,
+          shift: shiftLesson,
+        } = parseShiftToTime(shift - 1, item.time)
+
+        return {
+          title: item.class.subject.subject_name,
+          start,
+          end,
+          extendedProps: {
+            room: `Phòng: ${item.class.class_detail.room_name}`,
+            teacher: `GV: ${item.class.professor_name}`,
+            tiet: `Tiết: ${shiftLesson}`,
+            class_name: item.class.class_name,
+            class_id: item.class.class_id,
+            towner: `Toà: ${item.class.class_detail.towner}`,
+          },
+        }
+      })
+
+      setCalendar(events)
+    }
+
+    fetchData()
+  }, [])
+
+  const renderEventContent = (eventInfo) => {
+    return (
+      <div className="p-1 bg-blue-500 w-[150px] -ml-[3px] -mt-[0.5px] rounded-md">
+        <strong className="text-base">{eventInfo.event.title}</strong>
+        <p>
+          {eventInfo.event.extendedProps.class_id} -{' '}
+          {eventInfo.event.extendedProps.class_name}{' '}
+        </p>
+        <p>{eventInfo.event.extendedProps.tiet}</p>
+        <p>{eventInfo.event.extendedProps.room}</p>
+        <p>{eventInfo.event.extendedProps.teacher}</p>
+        <p>{eventInfo.event.extendedProps.towner}</p>
       </div>
+    )
+  }
+
+  return (
+    <div>
+      <Header />
+      <br />
+      <div className="mx-auto w-3/4">
+        <FullCalendar
+          allDaySlot={false}
+          contentHeight={770}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          headerToolbar={{
+            left: '',
+            center: '',
+            right: 'prev,next today,timeGridWeek',
+          }}
+          timeZone="local"
+          events={calendar}
+          slotMinTime="06:30:00"
+          slotMaxTime="20:40:00"
+          eventContent={renderEventContent}
+        />
+      </div>
+      <br />
+      <Footer />
     </div>
   )
 }
 
-export default Schedule
+export default Calendar
